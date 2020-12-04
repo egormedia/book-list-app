@@ -13,12 +13,6 @@ const App = () => {
   const [isbn, setIsbn] = useState('');
   const [currentBookId, setCurrentBookId] = useState(null);
   const [books, setBooks] = useState([
-    /*{
-      bookTitle: title,
-      bookAuthor: author,
-      bookIsnb: isbn,
-      bookId: uuidv4(),
-    },*/
     {
       bookTitle: "Book 1",
       bookAuthor: "John Doe",
@@ -26,7 +20,7 @@ const App = () => {
       bookId: uuidv4(),
     },
   ]);
-/*
+
   const isInputInvalid = () => {
     return title.trim() === "" || author.trim() === "" || isbn.trim() === "";
   };
@@ -36,7 +30,7 @@ const App = () => {
     setAuthor("");
     setIsbn("");
   };
-*/
+
   const addBook = () => {
     setBooks([
       ...books,
@@ -49,12 +43,40 @@ const App = () => {
     ]);
   };
 
+  const editBook = (book) => {
+    setTitle(book.bookTitle);
+    setAuthor(book.bookAuthor);
+    setIsbn(book.bookIsbn);
+
+    setCurrentBookId(book.bookId);
+  };
+
+  const updateBook = () => {
+    setBooks(
+      books.map(book => 
+      book.bookId === currentBookId 
+      ? { ...books, bookTitle: title, bookAuthor: author, bookIsbn: isbn}
+      : book
+      )
+    );
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    /*clearInputs();
-    if (isInputInvalid()) return;*/
-    addBook();
+    clearInputs();
+    setCurrentBookId(null);
+    if (isInputInvalid()) return;
+    !currentBookId ? addBook() : updateBook();
   };
+
+  const removeBook = (id) => {
+    setBooks(books.filter((book) => book.bookId !== id));
+  };
+
+  const cancelEdit = () => {
+    clearInputs();
+    setCurrentBookId(null);
+  }
 
   return (
     <div className="App">
@@ -69,8 +91,9 @@ const App = () => {
           setIsbn={setIsbn}
           currentBookId={currentBookId}
           handleSubmit={handleSubmit}
+          cancelEdit={cancelEdit}
         />
-        <Table books={books} />
+        <Table books={books} removeBook={removeBook} editBook={editBook} />
       </div>
     </div>
   );

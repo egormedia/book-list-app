@@ -10,17 +10,37 @@ const Form = (props) => {
         setIsbn,
         currentBookId,
         handleSubmit,
+        cancelEdit,
     } = props;
 
     return(
         <form onSubmit={handleSubmit}>
             <label>Title</label>
-            <input type="text" />
+            <input 
+                autoFocus
+                required
+                type="text"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)} 
+            />
             <label>Author</label>
-            <input type="text" />
+            <input 
+                required
+                type="text"
+                value={author}
+                onChange={(e) => setAuthor(e.target.value)} 
+            />
             <label>ISBN#</label>
-            <input type="text" />
-            <button tabIndex="0" type="submit">{currentBookId !== null ? "Update" : "Add"}</button>
+            <input 
+                required
+                type="text"
+                value={isbn}
+                onChange={(e) => setIsbn(e.target.value)} 
+            />
+            <button tabIndex="0" type="submit">
+                {currentBookId !== null ? "Update" : "Add"}
+            </button>
+            {currentBookId !== null && <button onClick={cancelEdit}>Cancel</button>}
         </form>
     );
 };
