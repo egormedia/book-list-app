@@ -1,23 +1,77 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+import Form from './components/Form';
+import Table from './components/Table';
 import './App.css';
 
-function App() {
+//he replaces function with 
+// const App = () => {
+//function App() {
+const App = () => {
+  const [title, setTitle] = useState('');
+  const [author, setAuthor] = useState('');
+  const [isbn, setIsbn] = useState('');
+  const [currentBookId, setCurrentBookId] = useState(null);
+  const [books, setBooks] = useState([
+    /*{
+      bookTitle: title,
+      bookAuthor: author,
+      bookIsnb: isbn,
+      bookId: uuidv4(),
+    },*/
+    {
+      bookTitle: "Book 1",
+      bookAuthor: "John Doe",
+      bookIsbn: "9999",
+      bookId: uuidv4(),
+    },
+  ]);
+/*
+  const isInputInvalid = () => {
+    return title.trim() === "" || author.trim() === "" || isbn.trim() === "";
+  };
+
+  const clearInputs = () => {
+    setTitle("");
+    setAuthor("");
+    setIsbn("");
+  };
+*/
+  const addBook = () => {
+    setBooks([
+      ...books,
+      {
+        bookTitle: title,
+        bookAuthor: author,
+        bookIsbn: isbn,
+        bookId: uuidv4(),
+      },
+    ]);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    /*clearInputs();
+    if (isInputInvalid()) return;*/
+    addBook();
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Book List App</h1>
+      <div className="container">
+        <Form 
+          title={title}
+          setTitle={setTitle}
+          author={author}
+          setAuthor={setAuthor}
+          isbn={isbn}
+          setIsbn={setIsbn}
+          currentBookId={currentBookId}
+          handleSubmit={handleSubmit}
+        />
+        <Table books={books} />
+      </div>
     </div>
   );
 }
